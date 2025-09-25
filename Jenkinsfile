@@ -5,7 +5,7 @@ pipeline {
         BACKEND_IMAGE = "devops-backend"
         FRONTEND_IMAGE = "devops-frontend"
         EC2_USER = "ec2-user"
-        EC2_HOST = "3.109.55.16"
+        EC2_HOST = "3.109.55.167"
         FRONTEND_PORT = "3000"
         BACKEND_PORT = "8081"
     }
