@@ -5,7 +5,7 @@ pipeline {
         BACKEND_IMAGE = "devops-backend"
         FRONTEND_IMAGE = "devops-frontend"
         EC2_USER = "ec2-user"
-        EC2_HOST = "3.109.203.171"
+        EC2_HOST = "3.109.55.16"
         FRONTEND_PORT = "3000"
         BACKEND_PORT = "8081"
     }
@@ -31,7 +31,7 @@ pipeline {
                             # Build & run Backend
                             cd backend
                             docker build -t ${BACKEND_IMAGE} .
-                            docker run -d -p ${BACKEND_PORT}:8080 --name backend ${BACKEND_IMAGE}
+                            docker run -d -p ${BACKEND_PORT}:8081 --name backend ${BACKEND_IMAGE}
 
                             # Build & run Frontend
                             cd ../frontend
