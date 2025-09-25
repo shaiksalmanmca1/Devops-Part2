@@ -19,24 +19,18 @@ pipeline {
 
         stage('Build & Deploy on EC2') {
             steps {
-                // Use Jenkins SSH credential for EC2
                 sshagent (credentials: ['ec2-ssh-key']) {
                     sh """
                         ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} '
                             cd ~/Devops-CI-CD
-
-                            # Remove old containers if they exist
                             docker rm -f backend frontend || true
-
-                            # Build & run Backend
                             cd backend
                             docker build -t ${BACKEND_IMAGE} .
-                            docker run -d -p ${BACKEND_PORT}:8081 --name backend ${BACKEND_IMAGE}
-
-                            # Build & run Frontend
+                            docker run -d -p ${BACKEND_PORT}:8080 --name backend ${BACKEND_IMAGE}
                             cd ../frontend
-                            # Update frontend .env to point to backend IP
-                            sed -i "s|http://backend:8080|http://${EC2_HOST}:${BACKEND_PORT}|g" .env
+                            if [ -f .env ]; then
+                                sed -i "s|http://backend:8080|http://${EC2_HOST}:${BACKEND_PORT}|g" .env
+                            fi
                             docker build -t ${FRONTEND_IMAGE} .
                             docker run -d -p ${FRONTEND_PORT}:80 --name frontend ${FRONTEND_IMAGE}
                         '
